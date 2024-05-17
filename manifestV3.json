@@ -19,6 +19,11 @@
   "background": {
     "service_worker": "background.js"
   },
+"browser_specific_settings": {
+    "gecko": {
+      "id": "verifiedusers@strawberrymaster"
+    }
+  },
 "content_scripts": [
     {
       "js": ["contentScript.js"],
