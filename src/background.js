@@ -2,7 +2,7 @@ const browserStatus = typeof browser !== 'undefined'
 
 function updateExtensionIconFirefox (url) {
   if (url === '') return
-  if (url.startsWith('https://twitter.com/') || url.startsWith('https://x.com') || url.startsWith('https://mobile.twitter.com') || url.startsWith('https://mobile.x.com') || url.startsWith('https://pro.twitter.com') || url.startsWith('https://pro.x.com')) {
+  if (url.startsWith('https://twitter.com/') || url.startsWith('https://x.com/') || url.startsWith('https://mobile.twitter.com/') || url.startsWith('https://mobile.x.com/') || url.startsWith('https://pro.twitter.com/') || url.startsWith('https://pro.x.com/')) {
     browser.browserAction.enable()
   } else {
     browser.browserAction.disable()
