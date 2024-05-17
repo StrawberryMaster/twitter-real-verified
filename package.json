@@ -1,6 +1,6 @@
 {
   "name": "twitter-real-verified",
-  "version": "2.1.1",
+  "version": "2.1.8",
   "description": "Return Twitter's legacy verification and change the verification badge from users with Twitter Blue",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

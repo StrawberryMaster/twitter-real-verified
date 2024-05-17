@@ -1,4 +1,3 @@
-
 export const elementsPaths = (element) => {
   return [
     // Account menu user profile, inbox Messages , heading title (user profile), search results, you might like section
