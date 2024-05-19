@@ -43,7 +43,8 @@
       ],
       "matches": [
         "https://twitter.com/*",
-        "https://tweetdeck.twitter.com/*"
+        "https://tweetdeck.twitter.com/*",
+        "https://x.com/*"
       ]
     }
   ]

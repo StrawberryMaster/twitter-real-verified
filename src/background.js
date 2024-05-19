@@ -26,10 +26,19 @@ function updateExtensionIconChrome () {
     ],
     actions: [new chrome.declarativeContent.ShowAction()]
   }
+  const rule3 = {
+    conditions: [
+      new chrome.declarativeContent.PageStateMatcher({
+        pageUrl: { urlPrefix: 'https://x.com/' }
+      })
+    ],
+    actions: [new chrome.declarativeContent.ShowAction()]
+  }
   chrome.action.disable()
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
     chrome.declarativeContent.onPageChanged.addRules([rule1])
     chrome.declarativeContent.onPageChanged.addRules([rule2])
+    chrome.declarativeContent.onPageChanged.addRules([rule3])
   })
 }
 
