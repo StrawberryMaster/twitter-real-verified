@@ -28,6 +28,10 @@ This is a fork of the browser extension of the same name. It aims to bring back 
 </p>
 
 ## What's New 
+### v2.1.8:
+
+- Added support for x.com
+
 ### v2.1.7:
 - Fix bug when showing verified badges.
 
