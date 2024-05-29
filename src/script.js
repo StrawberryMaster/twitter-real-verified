@@ -157,7 +157,7 @@ function simpleCheckmark () {
   const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svgElement.setAttribute('viewBox', '30 110 300 300')
   svgElement.id = VERIFIED_TYPE.LEGACY_VERIFIED
-  svgElement.setAttribute('class', 'r-1cvl2hr r-4qtqp9 r-yyyyoo r-1xvli5t r-f9ja8p r-og9te1 r-bnwqim r-1plcrui r-lrvibr')
+  svgElement.setAttribute('class', 'r-4qtqp9 r-yyyyoo r-1xvli5t r-bnwqim r-lrvibr r-m6rgpd r-1cvl2hr r-f9ja8p r-og9te1 r-3t4u6i')
 
   const ellipse1 = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse')
   ellipse1.setAttribute('style', 'stroke: rgb(0, 0, 0); fill: #3e9a19;')
@@ -261,7 +261,7 @@ function createBadge (badgeConfig, userVerifiedType, badgeColor) {
     const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svgElement.id = VERIFIED_TYPE.LEGACY_VERIFIED
     svgElement.setAttribute('viewBox', '0 0 22 22')
-    svgElement.setAttribute('class', 'r-1cvl2hr r-4qtqp9 r-yyyyoo r-1xvli5t r-f9ja8p r-og9te1 r-bnwqim r-1plcrui r-lrvibr')
+    svgElement.setAttribute('class', 'r-4qtqp9 r-yyyyoo r-1xvli5t r-bnwqim r-lrvibr r-m6rgpd r-1cvl2hr r-f9ja8p r-og9te1 r-3t4u6i')
 
     svgElement.appendChild(gElement)
     element.appendChild(svgElement)
