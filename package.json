@@ -11,20 +11,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/runtime": "^7.24.5",
-    "@uiw/color-convert": "^2.3.0",
-    "@uiw/react-color-hue": "^2.3.0",
-    "@uiw/react-color-shade-slider": "^2.3.0",
+    "@babel/runtime": "^7.26.0",
+    "@uiw/color-convert": "^2.3.4",
+    "@uiw/react-color-hue": "^2.3.4",
+    "@uiw/react-color-shade-slider": "^2.3.4",
     "npm-check-updates": "^16.14.20",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "chokidar": "^3.6.0",
-    "esbuild": "^0.21.3",
+    "esbuild": "^0.21.5",
     "esbuild-plugin-svgr": "^2.1.0",
     "fs-extra": "^11.2.0",
-    "standard": "^17.1.0"
+    "standard": "^17.1.2"
   },
   "standard": {
     "globals": [
