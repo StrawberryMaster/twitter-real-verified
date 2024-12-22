@@ -1,0 +1,49 @@
+name: Build extension
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'latest'
+        
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: latest
+        
+    - name: Install dependencies
+      run: pnpm install
+      
+    - name: Build Chrome extension
+      run: pnpm run build-chrome
+      
+    - name: Build Firefox extension
+      run: pnpm run build-firefox
+      
+    - name: Zipping files
+      run: |
+        cd chrome-extension && zip -r ../chrome-extension.zip . && cd ..
+        cd firefox-extension && zip -r ../firefox-extension.zip . && cd ..
+        
+    - name: Create release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          chrome-extension.zip
+          firefox-extension.zip
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
