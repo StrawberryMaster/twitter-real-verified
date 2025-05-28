@@ -12,7 +12,7 @@ function Options ({ userOptions, updateConfig }) {
   const replacewithClown = (
     <>
       {txt('replace_twitter_blue_badge_with_clown')}
-      <ClownBadge />
+      <ClownBadge style={{ height: '25px' }} />
     </>
 
   )
