@@ -22,12 +22,34 @@ if (localStorageConfig) {
   userOptions = currentUserConfig.options
 }
 
+let legacyUsers1 = null;
+let legacyUsers2 = null;
+let legacyUserMap1 = null;
+let legacyUserMap2 = null;
+
+function processLegacyListToMap(list) {
+  const map = new Map();
+  if (!list) return map;
+  for (const group of list) {
+    if (group && typeof group.key === 'string' && Array.isArray(group.users)) {
+      if (!map.has(group.key)) {
+        map.set(group.key, new Set());
+      }
+      const userSet = map.get(group.key);
+      for (const user of group.users) {
+        userSet.add(user);
+      }
+    }
+  }
+  return map;
+}
+
 function getParentElementByLevel (element, parentLevel) {
+  if (!element || parentLevel <= 0) return element
+  
   let parentTarget = element
-  let level = 0
-  while (level < parentLevel) {
+  for (let level = 0; level < parentLevel && parentTarget?.parentElement; level++) {
     parentTarget = parentTarget.parentElement
-    level++
   }
   return parentTarget
 }
@@ -120,37 +142,42 @@ async function handleVerificationStatus (element, elementOptions) {
 }
 
 async function isUserLegacyVerified (element) {
-  const posibleElementPaths = elementsPaths(element)
+  const posibleElementPaths = elementsPaths(element);
 
   for (let i = 0; i < posibleElementPaths.length; i++) {
-    if (posibleElementPaths[i] === undefined) continue
+    if (posibleElementPaths[i] === undefined) continue;
 
-    const currentElement = posibleElementPaths[i]
-    const reactProps = currentElement[Object.keys(currentElement).find(k => k.startsWith('__reactProps$'))]
-    const currentUser = propsPaths(reactProps)
+    const currentElement = posibleElementPaths[i];
+    const reactProps = currentElement[Object.keys(currentElement).find(k => k.startsWith('__reactProps$'))];
+    const currentUser = propsPaths(reactProps);
 
     if (currentUser !== undefined) {
-      const legacyUsers1 = await loadVerifiedList1
-      const legacyUsers2 = await loadVerifiedList2
+      if (legacyUserMap1 === null) {
+        if (legacyUsers1 === null) {
+            legacyUsers1 = await loadVerifiedList1;
+        }
+        legacyUserMap1 = processLegacyListToMap(legacyUsers1);
+      }
+      if (legacyUserMap2 === null) {
+        if (legacyUsers2 === null) {
+            legacyUsers2 = await loadVerifiedList2;
+        }
+        legacyUserMap2 = processLegacyListToMap(legacyUsers2);
+      }
 
-      for (let index = 0; index < legacyUsers1.length; index++) {
-        if (legacyUsers1[index].key === currentUser[0]) {
-          if (legacyUsers1[index].users.some(user => user === currentUser)) {
-            return true
-          }
-        }
+      const userKey = currentUser[0];
+
+      if (legacyUserMap1.has(userKey) && legacyUserMap1.get(userKey).has(currentUser)) {
+        return true;
       }
-      for (let index = 0; index < legacyUsers2.length; index++) {
-        if (legacyUsers2[index].key === currentUser[0]) {
-          if (legacyUsers2[index].users.some(user => user === currentUser)) {
-            return true
-          }
-        }
+      if (legacyUserMap2.has(userKey) && legacyUserMap2.get(userKey).has(currentUser)) {
+        return true;
       }
-      return false
+      return false;
     }
   }
-  return false
+  
+  return false;
 }
 
 function simpleCheckmark () {
@@ -272,7 +299,7 @@ const observer = new MutationObserver(callbackObserver)
 
 function callbackObserver (mutationList) {
   for (const mutation of mutationList) {
-    for (node of mutation.addedNodes) {
+    for (const node of mutation.addedNodes) {
       findElementBadge(node)
     }
   }
