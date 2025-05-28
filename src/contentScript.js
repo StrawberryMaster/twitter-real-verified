@@ -1,37 +1,86 @@
 import { validateBrowserAPI as browserAPI } from './utils/validateUserBrowser'
 import { LOCAL_STORAGE, CONFIG_REQUEST } from './constants'
 
-const addElementVerifiedList = document.createElement('script')
-addElementVerifiedList.src = browserAPI().runtime.getURL('verifiedUserList1.js')
-document.head.appendChild(addElementVerifiedList)
-addElementVerifiedList.onload = function () { this.remove() }
+function loadScript(scriptPath) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.src = browserAPI().runtime.getURL(scriptPath)
+    script.onload = () => {
+      script.remove()
+      resolve()
+    }
+    script.onerror = () => {
+      script.remove()
+      reject(new Error(`Failed to load script: ${scriptPath}`))
+    }
+    document.head.appendChild(script)
+  })
+}
 
-const addElementVerifiedList2 = document.createElement('script')
-addElementVerifiedList2.src = browserAPI().runtime.getURL('verifiedUserList2.js')
-document.head.appendChild(addElementVerifiedList2)
-addElementVerifiedList2.onload = function () { this.remove() }
+async function loadAllScripts() {
+  const scripts = ['verifiedUserList1.js', 'verifiedUserList2.js', 'script.js']
+  
+  try {
+    await Promise.all(scripts.map(script => loadScript(script)))
+    console.log('All scripts loaded successfully')
+  } catch (error) {
+    console.error('Error loading scripts:', error)
+  }
+}
 
-const addElementScript = document.createElement('script')
-addElementScript.src = browserAPI().runtime.getURL('script.js')
-document.head.appendChild(addElementScript)
-addElementScript.onload = function () { this.remove() }
+loadAllScripts()
 
 browserAPI().runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request[CONFIG_REQUEST.SAVE]) {
-    saveChanges(request[CONFIG_REQUEST.SAVE])
-    sendResponse({ status: true, content: request[CONFIG_REQUEST.SAVE], message: 'Saved Settings' })
-  }
-  if (request[CONFIG_REQUEST.LOAD]) {
-    const getLocalStorage = localStorage.getItem(LOCAL_STORAGE)
-    if (getLocalStorage !== null) {
-      sendResponse({ status: true, content: JSON.parse(getLocalStorage), message: 'Config Loaded' })
-    } else {
-      sendResponse({ status: true, content: null, message: 'There is no data saved' })
+  (async () => {
+    try {
+      if (request[CONFIG_REQUEST.SAVE]) {
+        await saveChanges(request[CONFIG_REQUEST.SAVE])
+        sendResponse({ 
+          status: true, 
+          content: request[CONFIG_REQUEST.SAVE], 
+          message: 'Settings saved successfully' 
+        })
+      }
+      
+      if (request[CONFIG_REQUEST.LOAD]) {
+        const config = loadConfig()
+        sendResponse({ 
+          status: true, 
+          content: config, 
+          message: config ? 'Config loaded successfully' : 'No saved data found' 
+        })
+      }
+    } catch (error) {
+      console.error('Error processing message:', error)
+      sendResponse({ 
+        status: false, 
+        content: null, 
+        message: 'Error processing request',
+        error: error.message 
+      })
     }
-  }
+  })()
+  
+  return true
 })
 
-function saveChanges (configValues) {
-  const convertedConfig = JSON.stringify(configValues)
-  localStorage.setItem(LOCAL_STORAGE, convertedConfig)
+function loadConfig() {
+  try {
+    const storedData = localStorage.getItem(LOCAL_STORAGE)
+    return storedData ? JSON.parse(storedData) : null
+  } catch (error) {
+    console.error('Error parsing stored config:', error)
+    return null
+  }
+}
+
+async function saveChanges(configValues) {
+  try {
+    const serializedConfig = JSON.stringify(configValues)
+    localStorage.setItem(LOCAL_STORAGE, serializedConfig)
+    console.log('Configuration saved successfully')
+  } catch (error) {
+    console.error('Error saving configuration:', error)
+    throw error
+  }
 }
