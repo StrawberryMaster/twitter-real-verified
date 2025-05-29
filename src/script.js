@@ -22,31 +22,31 @@ if (localStorageConfig) {
   userOptions = currentUserConfig.options
 }
 
-let legacyUsers1 = null;
-let legacyUsers2 = null;
-let legacyUserMap1 = null;
-let legacyUserMap2 = null;
+let legacyUsers1 = null
+let legacyUsers2 = null
+let legacyUserMap1 = null
+let legacyUserMap2 = null
 
-function processLegacyListToMap(list) {
-  const map = new Map();
-  if (!list) return map;
+function processLegacyListToMap (list) {
+  const map = new Map()
+  if (!list) return map
   for (const group of list) {
     if (group && typeof group.key === 'string' && Array.isArray(group.users)) {
       if (!map.has(group.key)) {
-        map.set(group.key, new Set());
+        map.set(group.key, new Set())
       }
-      const userSet = map.get(group.key);
+      const userSet = map.get(group.key)
       for (const user of group.users) {
-        userSet.add(user);
+        userSet.add(user)
       }
     }
   }
-  return map;
+  return map
 }
 
 function getParentElementByLevel (element, parentLevel) {
   if (!element || parentLevel <= 0) return element
-  
+
   let parentTarget = element
   for (let level = 0; level < parentLevel && parentTarget?.parentElement; level++) {
     parentTarget = parentTarget.parentElement
@@ -142,42 +142,42 @@ async function handleVerificationStatus (element, elementOptions) {
 }
 
 async function isUserLegacyVerified (element) {
-  const posibleElementPaths = elementsPaths(element);
+  const posibleElementPaths = elementsPaths(element)
 
   for (let i = 0; i < posibleElementPaths.length; i++) {
-    if (posibleElementPaths[i] === undefined) continue;
+    if (posibleElementPaths[i] === undefined) continue
 
-    const currentElement = posibleElementPaths[i];
-    const reactProps = currentElement[Object.keys(currentElement).find(k => k.startsWith('__reactProps$'))];
-    const currentUser = propsPaths(reactProps);
+    const currentElement = posibleElementPaths[i]
+    const reactProps = currentElement[Object.keys(currentElement).find(k => k.startsWith('__reactProps$'))]
+    const currentUser = propsPaths(reactProps)
 
     if (currentUser !== undefined) {
       if (legacyUserMap1 === null) {
         if (legacyUsers1 === null) {
-            legacyUsers1 = await loadVerifiedList1;
+          legacyUsers1 = await loadVerifiedList1
         }
-        legacyUserMap1 = processLegacyListToMap(legacyUsers1);
+        legacyUserMap1 = processLegacyListToMap(legacyUsers1)
       }
       if (legacyUserMap2 === null) {
         if (legacyUsers2 === null) {
-            legacyUsers2 = await loadVerifiedList2;
+          legacyUsers2 = await loadVerifiedList2
         }
-        legacyUserMap2 = processLegacyListToMap(legacyUsers2);
+        legacyUserMap2 = processLegacyListToMap(legacyUsers2)
       }
 
-      const userKey = currentUser[0];
+      const userKey = currentUser[0]
 
       if (legacyUserMap1.has(userKey) && legacyUserMap1.get(userKey).has(currentUser)) {
-        return true;
+        return true
       }
       if (legacyUserMap2.has(userKey) && legacyUserMap2.get(userKey).has(currentUser)) {
-        return true;
+        return true
       }
-      return false;
+      return false
     }
   }
-  
-  return false;
+
+  return false
 }
 
 function simpleCheckmark () {
