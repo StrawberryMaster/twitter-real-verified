@@ -3,16 +3,16 @@
         "message": "Twitter Real Verified"
     },
     "app_description": {
-        "message": "Recupera la verificación heredada de Twitter y cambia el ícono de verificado a usuarios que tienen Twitter Blue."
+        "message": "Recupera la verificación heredada de Twitter y cambia el ícono de verificado a usuarios que tienen Twitter Premium."
     },
     "twitter_blue": {
-        "message": "Twitter Blue"
+        "message": "Twitter Premium"
     },
     "verified": {
         "message": "Verificado"
     },
     "verified_and_with_twitter_blue": {
-        "message": "Verificado y con Twitter Blue"
+        "message": "Verificado y con Twitter Premium"
     },
     "bussiness_badge": {
         "message": "Negocio"
@@ -21,19 +21,19 @@
         "message": "Gobierno/Org"
     },
     "twitter_blue_badge": {
-        "message": "Twitter Blue"
+        "message": "Twitter Premium"
     },
     "options": {
         "message": "Opciones"
     },
     "hide_twitter_blue": {
-        "message": "Ocultar íconos de Twitter Blue."
+        "message": "Ocultar íconos de Twitter Premium."
     },
     "revoke_verified": {
-        "message": "Quitar ícono de verificado si el usuario también tiene Twitter Blue."
+        "message": "Quitar ícono de verificado si el usuario también tiene Twitter Premium."
     },
     "replace_twitter_blue_badge_with_clown":{
-        "message": "Íconos de Twitter Blue como"
+        "message": "Íconos de Twitter Premium como"
     },
     "simple_checkmark":{
         "message": "Agrega un simple gancho verde a las cuentas que anteriormente estaban verificadas."
